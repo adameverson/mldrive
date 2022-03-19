@@ -1,0 +1,38 @@
+<html>
+    <head>
+        <title>ML Drive</title>
+    </head>
+    <body>
+        We are not responsible for your files
+        <br><br>
+        <input id="fileupload" type="file" name="fileupload" />
+        <button id="upload-button" onclick="saveFile()">Upload</button>
+        <br><br>
+        <input id="filedownload" type="input" name="filedownload" placeholder="MyFile.txt" />
+        <button id="download-button" onclick="downloadFile()">Download</button>
+        <br><br>
+        <a id="link-download" href="" download>
+            
+        </a>
+
+        <script>
+            async function saveFile(){
+                if(fileupload.files[0].size > 1000){
+                    alert('Limit: 1000 bytes');
+                    return;
+                }
+                let formData = new FormData();
+                formData.append("file", fileupload.files[0]);
+                let response = await fetch("mldrive.php", {method: "POST", body: formData});
+                //alert('The file has been uploaded successfully.');
+                let data = await response.text();
+                alert(data);
+            }
+
+            function downloadFile(){
+                document.getElementById('link-download').href = "/mldrive/" + filedownload.value;
+                document.getElementById('link-download').innerHTML = filedownload.value;
+            }
+        </script>
+    </body>
+</html>
